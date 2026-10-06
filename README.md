@@ -54,3 +54,5 @@ cd lynx_spider
 
 
 # Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Iankulani/lynx_spider&type=Date)](https://star-history.com/#Iankulani/lynx_spider&Date)
