@@ -46,6 +46,10 @@ git clone https://github.com/Iankulani/lynx_spider.git
 cd lynx_spider
 ```
 
+# How to run
+```bash
+python3 lynx_spider.py
+```
 
 # Documentation
 
