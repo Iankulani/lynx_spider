@@ -1,0 +1,138 @@
+# ============================================
+# LYNX-SPIDER-V1 - Kubernetes Deployment
+# ============================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lynx-spider
+  namespace: lynx-spider
+  labels:
+    app: lynx-spider
+    version: "1.0.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lynx-spider
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: lynx-spider
+        version: "1.0.0"
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+      
+      containers:
+        - name: lynx-spider
+          image: lynx-spider-v1:latest
+          imagePullPolicy: Always
+          
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+                - SYS_ADMIN
+          
+          ports:
+            - name: web
+              containerPort: 5000
+              protocol: TCP
+            - name: phishing
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          
+          envFrom:
+            - configMapRef:
+                name: lynx-spider-config
+            - secretRef:
+                name: lynx-spider-secrets
+          
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+            limits:
+              cpu: "4"
+              memory: "4Gi"
+          
+          livenessProbe:
+            httpGet:
+              path: /api/stats
+              port: 5000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          
+          readinessProbe:
+            httpGet:
+              path: /api/stats
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          
+          volumeMounts:
+            - name: data
+              mountPath: /app/.lynx_spider
+            - name: reports
+              mountPath: /app/lynx_spider_reports
+            - name: logs
+              mountPath: /var/log/lynx_spider
+      
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: lynx-spider-data
+        - name: reports
+          persistentVolumeClaim:
+            claimName: lynx-spider-reports
+        - name: logs
+          emptyDir: {}
+      
+      nodeSelector:
+        kubernetes.io/os: linux
+      
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lynx-spider-data
+  namespace: lynx-spider
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lynx-spider-reports
+  namespace: lynx-spider
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard

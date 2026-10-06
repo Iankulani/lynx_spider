@@ -1,0 +1,50 @@
+# ============================================
+# LYNX-SPIDER-V1 - Kubernetes Services
+# ============================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: lynx-spider
+  namespace: lynx-spider
+  labels:
+    app: lynx-spider
+spec:
+  type: ClusterIP
+  selector:
+    app: lynx-spider
+  ports:
+    - name: web
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
+    - name: phishing
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lynx-spider-nodeport
+  namespace: lynx-spider
+  labels:
+    app: lynx-spider
+spec:
+  type: NodePort
+  selector:
+    app: lynx-spider
+  ports:
+    - name: web
+      port: 5000
+      targetPort: 5000
+      nodePort: 30500
+      protocol: TCP
+    - name: phishing
+      port: 8080
+      targetPort: 8080
+      nodePort: 30800
+      protocol: TCP

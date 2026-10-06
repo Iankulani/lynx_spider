@@ -1,0 +1,86 @@
+# ============================================
+# LYNX-SPIDER-V1 - Alpine Docker Compose
+# Lightweight deployment configuration
+# ============================================
+
+version: '3.8'
+
+networks:
+  lynx-network:
+    driver: bridge
+
+volumes:
+  lynx-data:
+  lynx-logs:
+  lynx-reports:
+
+services:
+  lynx-spider-alpine:
+    build:
+      context: .
+      dockerfile: Dockerfile.alpine
+    image: lynx-spider-v1:alpine
+    container_name: lynx-spider-alpine
+    hostname: lynx-spider
+    restart: unless-stopped
+    
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    
+    networks:
+      - lynx-network
+    
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+      - "9090:9090"
+    
+    environment:
+      - TZ=UTC
+      - LYNX_LOG_LEVEL=INFO
+      - PYTHONUNBUFFERED=1
+      - DISCORD_TOKEN=${DISCORD_TOKEN:-}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN:-}
+    
+    volumes:
+      - lynx-data:/app/.lynx_spider
+      - lynx-logs:/var/log/lynx_spider
+      - lynx-reports:/app/lynx_spider_reports
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # Lightweight Redis
+  redis-alpine:
+    image: redis:7-alpine
+    container_name: lynx-redis-alpine
+    restart: unless-stopped
+    networks:
+      - lynx-network
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

@@ -1,0 +1,27 @@
+# ============================================
+# LYNX-SPIDER-V1 - Kubernetes Namespace
+# ============================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lynx-spider
+  labels:
+    app: lynx-spider
+    version: "1.0.0"
+    environment: production
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: lynx-spider-quota
+  namespace: lynx-spider
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    persistentvolumeclaims: "10"
+    services: "10"
+    secrets: "20"
+    configmaps: "20"

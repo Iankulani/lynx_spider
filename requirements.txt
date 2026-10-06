@@ -1,0 +1,115 @@
+# ============================================
+# LYNX-SPIDER-V1 - Python Requirements
+# Author: Ian Carter Kulani
+# ============================================
+
+# ============ CORE DEPENDENCIES ============
+requests>=2.31.0
+urllib3>=2.0.0
+python-dateutil>=2.8.2
+pytz>=2023.3
+pyyaml>=6.0.1
+
+# ============ NETWORK & SECURITY ============
+scapy>=2.5.0
+dnspython>=2.4.2
+paramiko>=3.4.0
+python-nmap>=0.7.1
+netifaces>=0.11.0
+macaddress>=2.0.2
+whois>=0.9.5
+
+# ============ SYSTEM MONITORING ============
+psutil>=5.9.6
+pygetwindow>=0.0.9
+pyperclip>=1.8.2
+
+# ============ KEYLOGGER ============
+pynput>=1.7.6
+pyautogui>=0.9.54
+
+# ============ WEB FRAMEWORK ============
+Flask>=3.0.0
+Flask-SocketIO>=5.3.6
+Flask-CORS>=4.0.0
+Werkzeug>=3.0.1
+eventlet>=0.35.1
+
+# ============ BOT INTEGRATIONS ============
+discord.py>=2.3.2
+telethon>=1.34.0
+slack-sdk>=3.26.1
+slackclient>=2.9.4
+
+# ============ GOOGLE APIS ============
+google-api-python-client>=2.108.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+httplib2>=0.22.0
+
+# ============ WHATSAPP ============
+pywhatkit>=5.4
+selenium>=4.15.2
+webdriver-manager>=4.0.1
+
+# ============ CRYPTOGRAPHY ============
+cryptography>=41.0.7
+pyOpenSSL>=23.3.0
+bcrypt>=4.1.2
+
+# ============ DATA PROCESSING ============
+numpy>=1.26.2
+pandas>=2.1.3
+matplotlib>=3.8.2
+seaborn>=0.13.0
+scipy>=1.11.4
+
+# ============ DOCUMENT GENERATION ============
+reportlab>=4.0.7
+Pillow>=10.1.0
+qrcode>=7.4.2
+
+# ============ WEB SCRAPING ============
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+html5lib>=1.1
+
+# ============ URL SHORTENING ============
+pyshorteners>=1.0.1
+
+# ============ TERMINAL COLORS ============
+colorama>=0.4.6
+termcolor>=2.4.0
+
+# ============ EMAIL ============
+secure-smtplib>=0.1.1
+email-validator>=2.1.0
+
+# ============ DATABASE ============
+sqlalchemy>=2.0.23
+alembic>=1.12.1
+
+# ============ LOGGING ============
+loguru>=0.7.2
+structlog>=23.2.0
+
+# ============ TESTING ============
+pytest>=7.4.3
+pytest-asyncio>=0.21.1
+pytest-cov>=4.1.0
+
+# ============ UTILITIES ============
+tabulate>=0.9.0
+tqdm>=4.66.1
+python-dotenv>=1.0.0
+click>=8.1.7
+rich>=13.7.0
+
+# ============ ASYNC ============
+aiohttp>=3.9.1
+aiofiles>=23.2.1
+asyncio>=3.4.3
+
+# ============ METRICS ============
+prometheus-client>=0.19.0
+grafana-api>=1.0.3

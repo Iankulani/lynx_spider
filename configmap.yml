@@ -1,0 +1,29 @@
+# ============================================
+# LYNX-SPIDER-V1 - Kubernetes ConfigMap
+# ============================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lynx-spider-config
+  namespace: lynx-spider
+  labels:
+    app: lynx-spider
+data:
+  LYNX_LOG_LEVEL: "INFO"
+  LYNX_HOME: "/app"
+  LYNX_CONFIG_DIR: "/app/.lynx_spider"
+  TZ: "UTC"
+  
+  config.json: |
+    {
+      "version": "1.0.0",
+      "auto_start": false,
+      "web": {
+        "enabled": true,
+        "port": 5000,
+        "host": "0.0.0.0"
+      },
+      "monitoring": {
+        "enabled": true
+      }
+    }

@@ -1,0 +1,46 @@
+lynx-spider-v1/
+├── lynx_spider.py           # Main application
+├── requirements.txt          # Python dependencies
+├── requirements-dev.txt      # Development dependencies
+├── Dockerfile               # Docker image definition
+├── docker-compose.yml       # Multi-container orchestration
+├── docker-compose.alpine.yml # Alpine-based deployment
+├── .dockerignore            # Docker ignore file
+├── .gitignore               # Git ignore file
+├── .gitlab-ci.yml           # GitLab CI/CD pipeline
+├── secrets.yml              # Secrets configuration (DO NOT COMMIT)
+├── secrets.example.yml      # Example secrets template
+├── install.sh               # Linux/macOS installer
+├── install.bat              # Windows installer
+├── install.ps1              # PowerShell installer
+├── test-commands.py         # Command testing suite
+├── Makefile                 # Build automation
+├── README.md                # Documentation
+├── LICENSE                  # License file
+├── config/
+│   ├── nginx.conf           # Nginx reverse proxy
+│   ├── prometheus.yml       # Prometheus config
+│   └── grafana.ini          # Grafana config
+├── docker/
+│   ├── entrypoint.sh        # Container entrypoint
+│   ├── healthcheck.sh       # Health check script
+│   └── backup.sh            # Backup script
+├── grafana/
+│   ├── dashboards/
+│   │   └── lynx-spider.json # Grafana dashboard
+│   └── provisioning/
+│       ├── dashboards/
+│       │   └── default.yml
+│       └── datasources/
+│           └── prometheus.yml
+├── k8s/
+│   ├── namespace.yml
+│   ├── configmap.yml
+│   ├── secret.yml
+│   ├── deployment.yml
+│   ├── service.yml
+│   └── ingress.yml
+└── scripts/
+    ├── setup.sh
+    ├── test.sh
+    └── deploy.sh

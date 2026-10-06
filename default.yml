@@ -1,0 +1,18 @@
+# ============================================
+# LYNX-SPIDER-V1 - Grafana Dashboard Provisioning
+# ============================================
+
+apiVersion: 1
+
+providers:
+  - name: 'LYNX-SPIDER-V1'
+    orgId: 1
+    folder: 'Security'
+    folderUid: 'security'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

@@ -1,0 +1,112 @@
+# ============================================
+# LYNX-SPIDER-V1 - Alpine Linux Dockerfile
+# Lightweight deployment (~500MB vs ~1.5GB)
+# ============================================
+
+FROM python:3.11-alpine3.19 AS builder
+
+LABEL maintainer="Ian Carter Kulani"
+LABEL description="LYNX-SPIDER-V1 - Alpine Builder"
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# Install build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+    gcc \
+    g++ \
+    make \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    libpcap-dev \
+    python3-dev \
+    linux-headers \
+    cargo \
+    rust \
+    git
+
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install -r /tmp/requirements.txt
+
+# ============ RUNTIME STAGE ============
+FROM python:3.11-alpine3.19 AS runtime
+
+LABEL maintainer="Ian Carter Kulani"
+LABEL description="LYNX-SPIDER-V1 Cybersecurity Platform - Alpine"
+LABEL version="1.0.0"
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH" \
+    LYNX_HOME=/app \
+    TZ=UTC
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    # Network tools
+    iputils \
+    traceroute \
+    nmap \
+    nmap-scripts \
+    netcat-openbsd \
+    curl \
+    wget \
+    bind-tools \
+    whois \
+    net-tools \
+    iproute2 \
+    tcpdump \
+    # SSH
+    openssh-client \
+    # Utilities
+    bash \
+    ca-certificates \
+    tzdata \
+    procps \
+    htop \
+    vim \
+    less \
+    jq \
+    git \
+    # Libraries
+    libpcap \
+    openssl \
+    libffi \
+    # Shell
+    shadow \
+    su-exec
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Create user and directories
+RUN addgroup -S lynx && adduser -S lynx -G lynx -s /bin/bash && \
+    mkdir -p /app/.lynx_spider/{payloads,workspaces,scans,reports} \
+    && mkdir -p /app/lynx_spider_reports \
+    && mkdir -p /var/log/lynx_spider \
+    && chown -R lynx:lynx /app /var/log/lynx_spider
+
+WORKDIR /app
+
+# Copy application
+COPY --chown=lynx:lynx lynx_spider.py /app/
+COPY docker/entrypoint-alpine.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 5000 8080 8000-9000 9090
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:5000/api/stats || exit 1
+
+VOLUME ["/app/.lynx_spider", "/app/lynx_spider_reports", "/var/log/lynx_spider"]
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["python3", "-u", "lynx_spider.py"]

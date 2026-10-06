@@ -1,0 +1,33 @@
+# ============================================
+# LYNX-SPIDER-V1 - Kubernetes Ingress
+# ============================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lynx-spider
+  namespace: lynx-spider
+  labels:
+    app: lynx-spider
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+    - hosts:
+        - lynx-spider.example.com
+      secretName: lynx-spider-tls
+  rules:
+    - host: lynx-spider.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lynx-spider
+                port:
+                  number: 5000
