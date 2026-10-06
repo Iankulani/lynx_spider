@@ -1,5 +1,6 @@
 # lynx_spider
 
+<div align="center">
 <img width="360" height="360" alt="spyder" src="https://github.com/user-attachments/assets/3b457a25-1464-400c-b39c-5ca8cd2d8a02" />
 
 
@@ -13,6 +14,9 @@
 [![Python](https://img.shields.io/badge/python-3.x-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/docker-supported-blue?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/Iankulani/lynx_spider)
 [![Cybersecurity](https://img.shields.io/badge/cybersecurity-authorized%20testing-red?style=for-the-badge&logo=github)](https://github.com/Iankulani/lynx_spider)
+
+</div>
+
 
 Lynx spider
 
